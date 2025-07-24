@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Milestone #1: Display Book List</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f3;
+      padding: 20px;
+    }
+    #book-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .book {
+      background: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      max-width: 250px;
+      width: 100%;
+    }
+    .book img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto 10px;
+    }
+    .book h3 {
+      font-size: 16px;
+      color: #2c3e50;
+    }
+    .book p {
+      font-size: 14px;
+      color: #555;
+    }
+    .book a {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      color: #3498db;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Book List (google-books-search.json)</h1>
+  <div id="book-list"></div>
+
+  <script>
+    $(document).ready(function() {
+      $.getJSON("json/google-books-search.json", function(data) {
+        const books = data.items;
+
+        books.forEach(book => {
+          const info = book.volumeInfo;
+          let html = '<div class="book">';
+
+          if (info.imageLinks && info.imageLinks.thumbnail) {
+            html += `<img src="${info.imageLinks.thumbnail}" alt="${info.title} cover">`;
+          }
+
+          html += `<h3>${info.title}</h3>`;
+          if (info.authors) {
+            html += `<p><strong>Authors:</strong> ${info.authors.join(", ")}</p>`;
+          }
+          if (info.publisher) {
+            html += `<p><strong>Publisher:</strong> ${info.publisher}</p>`;
+          }
+          if (info.previewLink) {
+            html += `<a href="${info.previewLink}" target="_blank">Preview</a>`;
+          }
+
+          html += '</div>';
+          $('#book-list').append(html);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

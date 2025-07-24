@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Milestone #1: Display Single Book</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    #book-container {
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      margin: auto;
+    }
+    img {
+      max-width: 150px;
+      float: right;
+      margin-left: 20px;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    .info {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="book-container">
+    <h1>Single Book Display (google-books-book.json)</h1>
+    <div id="book"></div>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      $.getJSON("json/google-books-book.json", function(data) {
+        const volumeInfo = data.volumeInfo;
+
+        let html = `<h2>${volumeInfo.title}</h2>`;
+        html += `<p class="info"><strong>Authors:</strong> ${volumeInfo.authors.join(", ")}</p>`;
+        html += `<p class="info"><strong>Publisher:</strong> ${volumeInfo.publisher}</p>`;
+        html += `<p class="info"><strong>Published Date:</strong> ${volumeInfo.publishedDate}</p>`;
+        html += `<p class="info"><strong>Description:</strong> ${volumeInfo.description}</p>`;
+        html += `<p class="info"><strong>Page Count:</strong> ${volumeInfo.pageCount}</p>`;
+
+        if (volumeInfo.imageLinks && volumeInfo.imageLinks.thumbnail) {
+          html += `<img src="${volumeInfo.imageLinks.thumbnail}" alt="Book Cover">`;
+        }
+
+        if (volumeInfo.previewLink) {
+          html += `<p><a href="${volumeInfo.previewLink}" target="_blank">Preview this book</a></p>`;
+        }
+
+        $('#book').html(html);
+      });
+    });
+  </script>
+</body>
+</html>
